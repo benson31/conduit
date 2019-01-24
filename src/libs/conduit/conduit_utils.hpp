@@ -276,7 +276,7 @@ inline std::string to_string(string_view const& view)
     return std::string(view.data(), view.size());
 }
 
-inline std::ostream& operator<<(ostream& os, const string_view &str)
+inline std::ostream& operator<<(std::ostream& os, const string_view &str)
 {
     return os << to_string(str);
 }
