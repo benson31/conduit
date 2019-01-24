@@ -261,6 +261,7 @@ public:
     Schema           &fetch(const std::string &path);
     const Schema     &fetch(const std::string &path) const;
 
+    Schema           *fetch_ptr(const string_view &path);
     Schema           *fetch_ptr(const std::string &path);
     const Schema     *fetch_ptr(const std::string &path) const;
 

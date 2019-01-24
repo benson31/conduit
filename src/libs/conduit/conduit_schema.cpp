@@ -885,6 +885,12 @@ Schema::fetch_ptr(const std::string &path)
     return &fetch(path);
 }
 
+Schema *
+Schema::fetch_ptr(const string_view &path)
+{
+    return &fetch(path);
+}
+
 //---------------------------------------------------------------------------//
 const Schema *
 Schema::fetch_ptr(const std::string &path) const
