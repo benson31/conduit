@@ -59,7 +59,7 @@
 #include <iostream>
 #include <iomanip>
 #include <sstream>
-
+#include <cstring>
 
 //-----------------------------------------------------------------------------
 // -- conduit includes --
