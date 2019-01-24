@@ -208,8 +208,9 @@ public:
         const StringView<CharT> &other) noexcept = default;
 
     StringView<CharT>& operator=(std::basic_string<CharT> const& str) noexcept
-        : beg_{str.data()}, size_{str.size()}
     {
+        beg_ = str.data();
+        size_ = str.size();
         return *this;
     }
 
@@ -219,10 +220,12 @@ public:
         other.clear();
     }
 
-    StringView<CharT>& StringView(StringView<CharT> &&other)
-        : beg_{other.beg_}, size_{other.size_}
+    StringView<CharT>& operator=(StringView<CharT> &&other)
     {
+        beg_ = other.beg_;
+        size_ = other.size_;
         other.clear();
+        return *this;
     }
 
     size_t size() const noexcept { return size_; }
@@ -247,7 +250,7 @@ public:
 
     StringView<CharT> substr(size_t begin_idx, size_t end_idx)
     {
-        return StringView<CharT>{begin+begin_idx, end_idx-begin_idx};
+        return StringView<CharT>{beg_+begin_idx, end_idx-begin_idx};
     }
 };// class StringView
 
@@ -255,7 +258,7 @@ using string_view = StringView<char>;
 
 inline bool operator==(string_view const& str, const char* tgt)
 {
-    return strcmp(str.data(), tgt) == 0;
+    return std::strcmp(str.data(), tgt) == 0;
 }
 
 inline bool operator==(std::string const& str, string_view const& view)
