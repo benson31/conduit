@@ -258,6 +258,11 @@ inline bool operator==(string_view const& str, const char* tgt)
     return strcmp(str.data(), tgt) == 0;
 }
 
+inline bool operator==(std::string const& str, string_view const& view)
+{
+    return str == view.data();
+}
+
 inline string_view to_string_view(std::string const& str)
 {
     return string_view{str};
