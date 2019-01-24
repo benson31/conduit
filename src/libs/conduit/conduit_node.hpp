@@ -1,45 +1,45 @@
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
 // Copyright (c) 2014-2018, Lawrence Livermore National Security, LLC.
-// 
+//
 // Produced at the Lawrence Livermore National Laboratory
-// 
+//
 // LLNL-CODE-666778
-// 
+//
 // All rights reserved.
-// 
-// This file is part of Conduit. 
-// 
+//
+// This file is part of Conduit.
+//
 // For details, see: http://software.llnl.gov/conduit/.
-// 
+//
 // Please also read conduit/LICENSE
-// 
-// Redistribution and use in source and binary forms, with or without 
+//
+// Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided that the following conditions are met:
-// 
-// * Redistributions of source code must retain the above copyright notice, 
+//
+// * Redistributions of source code must retain the above copyright notice,
 //   this list of conditions and the disclaimer below.
-// 
+//
 // * Redistributions in binary form must reproduce the above copyright notice,
 //   this list of conditions and the disclaimer (as noted below) in the
 //   documentation and/or other materials provided with the distribution.
-// 
+//
 // * Neither the name of the LLNS/LLNL nor the names of its contributors may
 //   be used to endorse or promote products derived from this software without
 //   specific prior written permission.
-// 
+//
 // THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
 // AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
 // IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
 // ARE DISCLAIMED. IN NO EVENT SHALL LAWRENCE LIVERMORE NATIONAL SECURITY,
 // LLC, THE U.S. DEPARTMENT OF ENERGY OR CONTRIBUTORS BE LIABLE FOR ANY
-// DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL 
+// DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
 // DAMAGES  (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
 // OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
-// HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, 
+// HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
 // STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING
-// IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
+// IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 // POSSIBILITY OF SUCH DAMAGE.
-// 
+//
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
 
 
@@ -53,7 +53,7 @@
 #define CONDUIT_NODE_HPP
 
 //-----------------------------------------------------------------------------
-// -- standard lib includes -- 
+// -- standard lib includes --
 //-----------------------------------------------------------------------------
 #include <vector>
 #include <string>
@@ -61,7 +61,7 @@
 #include <sstream>
 
 //-----------------------------------------------------------------------------
-// -- conduit includes -- 
+// -- conduit includes --
 //-----------------------------------------------------------------------------
 #include "conduit_core.hpp"
 #include "conduit_endianness.hpp"
@@ -102,16 +102,16 @@ class CONDUIT_API Node
 //=============================================================================
 //-----------------------------------------------------------------------------
 //
-// -- public methods -- 
+// -- public methods --
 //
 //-----------------------------------------------------------------------------
 //=============================================================================
 public:
-    
+
 //-----------------------------------------------------------------------------
 // -- friends of Node --
 //-----------------------------------------------------------------------------
-    /// Note on use of `friend`: 
+    /// Note on use of `friend`:
     ///  NodeIterator needs access to Node internals to create
     ///   an efficient iterator
     friend class NodeIterator;
@@ -135,7 +135,7 @@ public:
 ///
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
-// -- basic constructor and destruction -- 
+// -- basic constructor and destruction --
 //-----------------------------------------------------------------------------
     Node();
     Node(const Node &node);
@@ -143,7 +143,7 @@ public:
 
     // returns any node to the empty state
     void reset();
-    
+
 //-----------------------------------------------------------------------------
 // -- constructors for generic types --
 //-----------------------------------------------------------------------------
@@ -158,7 +158,7 @@ public:
     Node(const std::string &json_schema,
          void *data,
          bool external);
-   
+
     Node(const Schema &schema,
          void *data,
          bool external);
@@ -186,8 +186,8 @@ public:
 /// description:
 ///  These methods use a Generator to parse a json schema into a Node hierarchy.
 ///
-/// * The non external variant with a NULL data parameter will allocate memory 
-///   for the Node hierarchy and populate with inline values from the json schema 
+/// * The non external variant with a NULL data parameter will allocate memory
+///   for the Node hierarchy and populate with inline values from the json schema
 ///   (if they are provided).
 ///
 /// * The `external' variants build a Node hierarchy that points to the input
@@ -203,7 +203,7 @@ public:
 
 
 //-----------------------------------------------------------------------------
-// -- json schema optionally coupled with in-core data -- 
+// -- json schema optionally coupled with in-core data --
 //-----------------------------------------------------------------------------
     void generate(const std::string &json_schema,
                   const std::string &protocol = std::string("conduit_json"),
@@ -266,7 +266,7 @@ public:
 ///@{
 //-----------------------------------------------------------------------------
 /// description:
-///   set(...) methods follow copy semantics. 
+///   set(...) methods follow copy semantics.
 //-----------------------------------------------------------------------------
 
 //-----------------------------------------------------------------------------
@@ -274,11 +274,11 @@ public:
 //-----------------------------------------------------------------------------
     void set_node(const Node &data);
     void set(const Node &data);
-    
+
     void set_dtype(const DataType &dtype);
     void set(const DataType &dtype);
 
-    void set_schema(const Schema &schema);    
+    void set_schema(const Schema &schema);
     void set(const Schema &schema);
 
     void set_data_using_schema(const Schema &schema, void *data);
@@ -296,30 +296,30 @@ public:
 
     void set_int16(int16 data);
     void set(int16 data);
-    
+
     void set_int32(int32 data);
     void set(int32 data);
-    
+
     void set_int64(int64 data);
     void set(int64 data);
 
     // unsigned integer scalar types
     void set_uint8(uint8 data);
     void set(uint8 data);
-    
+
     void set_uint16(uint16 data);
     void set(uint16 data);
 
     void set_uint32(uint32 data);
     void set(uint32 data);
-    
+
     void set_uint64(uint64 data);
     void set(uint64 data);
 
     // floating point scalar types
     void set_float32(float32 data);
     void set(float32 data);
-    
+
     void set_float64(float64 data);
     void set(float64 data);
 
@@ -327,15 +327,15 @@ public:
 //  set scalar gap methods for c-native types
 //-----------------------------------------------------------------------------
 //  These set methods are used to fill out the interface for cases where
-//  any of the native c types are not mapped 1-1 to our to bit width style 
-//  types. 
+//  any of the native c types are not mapped 1-1 to our to bit width style
+//  types.
 //
-//  Windows is one important case where this happens. Both long and int 
+//  Windows is one important case where this happens. Both long and int
 //  represent 32-bit integers, and long long is used as the type for 64-bit
-//  integers. In this case the long and int are aliased types -- we want 
+//  integers. In this case the long and int are aliased types -- we want
 //  to support both via overloaded "set" functions, however one of the types
-//  is already used as the underlying type for set(int32 ). When int is 
-//  selected as int32, Visual Studio needs an explicit method to disambiguate 
+//  is already used as the underlying type for set(int32 ). When int is
+//  selected as int32, Visual Studio needs an explicit method to disambiguate
 //  the long case.
 //-----------------------------------------------------------------------------
     void set(char data);
@@ -380,33 +380,33 @@ public:
     // signed integer array types via conduit::DataArray
     void set_int8_array(const int8_array  &data);
     void set(const int8_array  &data);
-    
+
     void set_int16_array(const int16_array &data);
     void set(const int16_array &data);
-    
+
     void set_int32_array(const int32_array &data);
     void set(const int32_array &data);
-    
+
     void set_int64_array(const int64_array &data);
     void set(const int64_array &data);
 
     // unsigned integer array types via conduit::DataArray
     void set_uint8_array(const uint8_array  &data);
     void set(const uint8_array  &data);
-    
+
     void set_uint16_array(const uint16_array &data);
     void set(const uint16_array &data);
-    
+
     void set_uint32_array(const uint32_array &data);
     void set(const uint32_array &data);
-    
+
     void set_uint64_array(const uint64_array &data);
     void set(const uint64_array &data);
 
     // floating point array types via conduit::DataArray
     void set_float32_array(const float32_array &data);
     void set(const float32_array &data);
-    
+
     void set_float64_array(const float64_array &data);
     void set(const float64_array &data);
 
@@ -416,7 +416,7 @@ public:
 //-----------------------------------------------------------------------------
     // we never use char directly, so we always need this
     void set(const char_array &data);
-    
+
     #ifndef CONDUIT_USE_CHAR
         void set(const signed_char_array &data);
         void set(const unsigned_char_array &data);
@@ -452,7 +452,7 @@ public:
 
 
 //-----------------------------------------------------------------------------
-// -- set for string types -- 
+// -- set for string types --
 //-----------------------------------------------------------------------------
     // char8_str use cases
     void set_string(const std::string &data);
@@ -468,13 +468,13 @@ public:
     //-------------------------------------------------------------------------
     void set_int8_vector(const std::vector<int8>   &data);
     void set(const std::vector<int8>   &data);
-    
+
     //-------------------------------------------------------------------------
     void set_int16_vector(const std::vector<int16>  &data);
     void set(const std::vector<int16>  &data);
 
     //-------------------------------------------------------------------------
-    void set_int32_vector(const std::vector<int32>  &data);    
+    void set_int32_vector(const std::vector<int32>  &data);
     void set(const std::vector<int32>  &data);
 
     //-------------------------------------------------------------------------
@@ -486,7 +486,7 @@ public:
     //-------------------------------------------------------------------------
     void set_uint8_vector(const std::vector<uint8>   &data);
     void set(const std::vector<uint8>   &data);
-    
+
     //-------------------------------------------------------------------------
     void set_uint16_vector(const std::vector<uint16>  &data);
     void set(const std::vector<uint16>  &data);
@@ -494,7 +494,7 @@ public:
     //-------------------------------------------------------------------------
     void set_uint32_vector(const std::vector<uint32>  &data);
     void set(const std::vector<uint32>  &data);
-    
+
     //-------------------------------------------------------------------------
     void set_uint64_vector(const std::vector<uint64>  &data);
     void set(const std::vector<uint64>  &data);
@@ -549,7 +549,7 @@ public:
 
 
 //-----------------------------------------------------------------------------
-// -- set via bitwidth style pointers (scalar and array types) -- 
+// -- set via bitwidth style pointers (scalar and array types) --
 //-----------------------------------------------------------------------------
     //-------------------------------------------------------------------------
     // signed integer pointer cases
@@ -569,20 +569,20 @@ public:
              index_t endianness = Endianness::DEFAULT_ID);
 
     //-------------------------------------------------------------------------
-    void set_int16_ptr(const int16 *data, 
+    void set_int16_ptr(const int16 *data,
                        index_t num_elements = 1,
                        index_t offset = 0,
                        index_t stride = sizeof(conduit::int16),
                        index_t element_bytes = sizeof(conduit::int16),
                        index_t endianness = Endianness::DEFAULT_ID);
 
-    void set(const int16 *data, 
+    void set(const int16 *data,
              index_t num_elements = 1,
              index_t offset = 0,
              index_t stride = sizeof(conduit::int16),
              index_t element_bytes = sizeof(conduit::int16),
              index_t endianness = Endianness::DEFAULT_ID);
-    
+
     //-------------------------------------------------------------------------
     void set_int32_ptr(const int32 *data,
                        index_t num_elements = 1,
@@ -590,7 +590,7 @@ public:
                        index_t stride = sizeof(conduit::int32),
                        index_t element_bytes = sizeof(conduit::int32),
                        index_t endianness = Endianness::DEFAULT_ID);
-    
+
     void set(const int32 *data,
              index_t num_elements = 1,
              index_t offset = 0,
@@ -713,9 +713,9 @@ public:
 //  set via pointer gap methods for c-native types
 //-----------------------------------------------------------------------------
    //-------------------------------------------------------------------------
-   // Char is never used in the interface, and set(char* ) is reserved 
-   // for strings, so we provide a set_char_ptr if folks want to 
-   // 
+   // Char is never used in the interface, and set(char* ) is reserved
+   // for strings, so we provide a set_char_ptr if folks want to
+   //
    //-------------------------------------------------------------------------
    void set_char_ptr(const char *data,
                      index_t num_elements = 1,
@@ -723,7 +723,7 @@ public:
                      index_t stride = sizeof(CONDUIT_NATIVE_CHAR),
                      index_t element_bytes = sizeof(CONDUIT_NATIVE_CHAR),
                      index_t endianness = Endianness::DEFAULT_ID);
-   
+
     #ifndef CONDUIT_USE_CHAR
         void set(const signed char *data,
                  index_t num_elements = 1,
@@ -868,7 +868,7 @@ public:
     //-------------------------------------------------------------------------
     void set_path_data_using_schema(const std::string &path,
                                     const Schema &schema,
-                                    void *data);              
+                                    void *data);
 
     void set_path(const std::string &path,
                   const Schema &schema,
@@ -892,7 +892,7 @@ public:
     void set_path_int8(const std::string &path, int8 data);
     void set_path(const std::string &path, int8 data);
 
-    //-------------------------------------------------------------------------     
+    //-------------------------------------------------------------------------
     void set_path_int16(const std::string &path, int16 data);
     void set_path(const std::string &path, int16 data);
 
@@ -905,7 +905,7 @@ public:
     void set_path(const std::string &path, int64 data);
 
     //-------------------------------------------------------------------------
-    // unsigned integer scalar types 
+    // unsigned integer scalar types
     //-------------------------------------------------------------------------
     void set_path_uint8(const std::string &path, uint8 data);
     void set_path(const std::string &path, uint8 data);
@@ -960,7 +960,7 @@ public:
         void set_path(const std::string &path, long long data);
         void set_path(const std::string &path, unsigned long long data);
     #endif
-        
+
     #ifndef CONDUIT_USE_FLOAT
         void set_path(const std::string &path, float data);
     #endif
@@ -1057,7 +1057,7 @@ public:
     #ifndef CONDUIT_USE_SHORT
         void set_path(const std::string &path,
                       const short_array &data);
-                      
+
         void set_path(const std::string &path,
                       const unsigned_short_array &data);
     #endif
@@ -1065,7 +1065,7 @@ public:
     #ifndef CONDUIT_USE_INT
         void set_path(const std::string &path,
                       const int_array &data);
-                      
+
         void set_path(const std::string &path,
                       const unsigned_int_array &data);
     #endif
@@ -1073,7 +1073,7 @@ public:
     #ifndef CONDUIT_USE_LONG
         void set_path(const std::string &path,
                       const long_array &data);
-                      
+
         void set_path(const std::string &path,
                       const unsigned_long_array &data);
     #endif
@@ -1081,7 +1081,7 @@ public:
     #if defined(CONDUIT_HAS_LONG_LONG) && !defined(CONDUIT_USE_LONG_LONG)
         void set_path(const std::string &path,
                       const long_long_array &data);
-                      
+
         void set_path(const std::string &path,
                       const unsigned_long_long_array &data);
 
@@ -1098,7 +1098,7 @@ public:
     #endif
 
 //-----------------------------------------------------------------------------
-// -- set_path for string types -- 
+// -- set_path for string types --
 //-----------------------------------------------------------------------------
     //-------------------------------------------------------------------------
     // char8_str use cases
@@ -1145,7 +1145,7 @@ public:
 
     void set_path(const std::string &path, const std::vector<int64> &data);
 
-    //-------------------------------------------------------------------------     
+    //-------------------------------------------------------------------------
     // unsigned integer array types via std::vector
     //-------------------------------------------------------------------------
     void set_path_uint8_vector(const std::string &path,
@@ -1189,27 +1189,27 @@ public:
 //-----------------------------------------------------------------------------
 //  set_path vector gap methods for c-native types
 //-----------------------------------------------------------------------------
-    void set_path(const std::string &path, 
+    void set_path(const std::string &path,
                   const std::vector<char> &data);
-                  
+
     #ifndef CONDUIT_USE_CHAR
-        void set_path(const std::string &path, 
+        void set_path(const std::string &path,
                       const std::vector<signed char> &data);
-                 
-        void set_path(const std::string &path, 
+
+        void set_path(const std::string &path,
                       const std::vector<unsigned char> &data);
     #endif
 
     #ifndef CONDUIT_USE_SHORT
-        void set_path(const std::string &path, 
+        void set_path(const std::string &path,
                       const std::vector<short> &data);
 
-        void set_path(const std::string &path, 
+        void set_path(const std::string &path,
                       const std::vector<unsigned short> &data);
     #endif
 
     #ifndef CONDUIT_USE_INT
-        void set_path(const std::string &path, 
+        void set_path(const std::string &path,
                       const std::vector<int> &data);
 
         void set_path(const std::string &path,
@@ -1217,35 +1217,35 @@ public:
     #endif
 
     #ifndef CONDUIT_USE_LONG
-        void set_path(const std::string &path, 
+        void set_path(const std::string &path,
                       const std::vector<long> &data);
 
-        void set_path(const std::string &path, 
+        void set_path(const std::string &path,
                       const std::vector<unsigned long> &data);
     #endif
 
     #if defined(CONDUIT_HAS_LONG_LONG) && !defined(CONDUIT_USE_LONG_LONG)
-        void set_path(const std::string &path, 
+        void set_path(const std::string &path,
                       const std::vector<long long> &data);
 
-        void set_path(const std::string &path, 
+        void set_path(const std::string &path,
                       const std::vector<unsigned long long> &data);
     #endif
 
     #ifndef CONDUIT_USE_FLOAT
-        void set_path(const std::string &path, 
+        void set_path(const std::string &path,
                       const std::vector<float> &data);
     #endif
 
     #ifndef CONDUIT_USE_DOUBLE
-        void set_path(const std::string &path, 
+        void set_path(const std::string &path,
                       const std::vector<double> &data);
     #endif
 
 
 //-----------------------------------------------------------------------------
-// -- set_path via bitwidth style pointers (scalar and array types) -- 
-//----------------------------------------------------------------------------- 
+// -- set_path via bitwidth style pointers (scalar and array types) --
+//-----------------------------------------------------------------------------
     //-------------------------------------------------------------------------
     // signed integer pointer cases
     //-------------------------------------------------------------------------
@@ -1267,7 +1267,7 @@ public:
 
     //-------------------------------------------------------------------------
     void set_path_int16_ptr(const std::string &path,
-                            const int16 *data, 
+                            const int16 *data,
                             index_t num_elements = 1,
                             index_t offset = 0,
                             index_t stride = sizeof(conduit::int16),
@@ -1275,7 +1275,7 @@ public:
                             index_t endianness = Endianness::DEFAULT_ID);
 
     void set_path(const std::string &path,
-                  const int16 *data, 
+                  const int16 *data,
                   index_t num_elements = 1,
                   index_t offset = 0,
                   index_t stride = sizeof(conduit::int16),
@@ -1368,7 +1368,7 @@ public:
                   index_t stride = sizeof(conduit::uint32),
                   index_t element_bytes = sizeof(conduit::uint32),
                   index_t endianness = Endianness::DEFAULT_ID);
-    
+
     //-------------------------------------------------------------------------
     void set_path_uint64_ptr(const std::string &path,
                              const uint64 *data,
@@ -1377,7 +1377,7 @@ public:
                              index_t stride = sizeof(conduit::uint64),
                              index_t element_bytes = sizeof(conduit::uint64),
                              index_t endianness = Endianness::DEFAULT_ID);
-    
+
     void set_path(const std::string &path,
                   const uint64 *data,
                   index_t num_elements = 1,
@@ -1407,7 +1407,7 @@ public:
 
     //-------------------------------------------------------------------------
     void set_path_float64_ptr(const std::string &path,
-                              const float64 *data, 
+                              const float64 *data,
                               index_t num_elements = 1,
                               index_t offset = 0,
                               index_t stride = sizeof(conduit::float64),
@@ -1546,7 +1546,7 @@ public:
     #endif
 
 //-----------------------------------------------------------------------------
-///@}                      
+///@}
 //-----------------------------------------------------------------------------
 //
 // -- end declaration of Node set_path methods --
@@ -1567,7 +1567,7 @@ public:
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
 // -- set external for generic types --
-//-----------------------------------------------------------------------------              
+//-----------------------------------------------------------------------------
     //-------------------------------------------------------------------------
     void set_external_node(const Node &n);
     void set_external(const Node &n);
@@ -1587,7 +1587,7 @@ public:
                       void *data);
 
 //-----------------------------------------------------------------------------
-// -- set_external via bitwidth style pointers (scalar and array types) -- 
+// -- set_external via bitwidth style pointers (scalar and array types) --
 //-----------------------------------------------------------------------------
     //-------------------------------------------------------------------------
     // signed integer pointer cases
@@ -1605,22 +1605,22 @@ public:
                       index_t stride = sizeof(conduit::int8),
                       index_t element_bytes = sizeof(conduit::int8),
                       index_t endianness = Endianness::DEFAULT_ID);
-    
+
     //-------------------------------------------------------------------------
-    void set_external_int16_ptr(int16 *data, 
+    void set_external_int16_ptr(int16 *data,
                                 index_t num_elements = 1,
                                 index_t offset = 0,
                                 index_t stride = sizeof(conduit::int16),
                                 index_t element_bytes = sizeof(conduit::int16),
                                 index_t endianness = Endianness::DEFAULT_ID);
 
-    void set_external(int16 *data, 
+    void set_external(int16 *data,
                       index_t num_elements = 1,
                       index_t offset = 0,
                       index_t stride = sizeof(conduit::int16),
                       index_t element_bytes = sizeof(conduit::int16),
                       index_t endianness = Endianness::DEFAULT_ID);
-    
+
     //-------------------------------------------------------------------------
     void set_external_int32_ptr(int32 *data,
                                 index_t num_elements = 1,
@@ -1635,7 +1635,7 @@ public:
                       index_t stride = sizeof(conduit::int32),
                       index_t element_bytes = sizeof(conduit::int32),
                       index_t endianness = Endianness::DEFAULT_ID);
-    
+
     //-------------------------------------------------------------------------
     void set_external_int64_ptr(int64 *data,
                                 index_t num_elements = 1,
@@ -1684,20 +1684,20 @@ public:
                       index_t endianness = Endianness::DEFAULT_ID);
 
     //-------------------------------------------------------------------------
-    void set_external_uint32_ptr(uint32 *data, 
+    void set_external_uint32_ptr(uint32 *data,
                                  index_t num_elements = 1,
                                  index_t offset = 0,
                                  index_t stride = sizeof(conduit::uint32),
                                  index_t element_bytes = sizeof(conduit::uint32),
                                  index_t endianness = Endianness::DEFAULT_ID);
 
-    void set_external(uint32 *data, 
+    void set_external(uint32 *data,
                       index_t num_elements = 1,
                       index_t offset = 0,
                       index_t stride = sizeof(conduit::uint32),
                       index_t element_bytes = sizeof(conduit::uint32),
                       index_t endianness = Endianness::DEFAULT_ID);
-                      
+
     //-------------------------------------------------------------------------
     void set_external_uint64_ptr(uint64 *data,
                                  index_t num_elements = 1,
@@ -1731,14 +1731,14 @@ public:
                       index_t endianness = Endianness::DEFAULT_ID);
 
     //-------------------------------------------------------------------------
-    void set_external_float64_ptr(float64 *data, 
+    void set_external_float64_ptr(float64 *data,
                                   index_t num_elements = 1,
                                   index_t offset = 0,
                                   index_t stride = sizeof(conduit::float64),
                                   index_t element_bytes = sizeof(conduit::float64),
                                   index_t endianness = Endianness::DEFAULT_ID);
 
-    void set_external(float64 *data, 
+    void set_external(float64 *data,
                       index_t num_elements = 1,
                       index_t offset = 0,
                       index_t stride = sizeof(conduit::float64),
@@ -1863,15 +1863,15 @@ public:
     //-------------------------------------------------------------------------
     void set_external_int8_array(const int8_array &data);
     void set_external(const int8_array &data);
-    
+
     //-------------------------------------------------------------------------
     void set_external_int16_array(const int16_array &data);
     void set_external(const int16_array &data);
-    
+
     //-------------------------------------------------------------------------
     void set_external_int32_array(const int32_array &data);
     void set_external(const int32_array &data);
-    
+
     //-------------------------------------------------------------------------
     void set_external_int64_array(const int64_array &data);
     void set_external(const int64_array &data);
@@ -1889,7 +1889,7 @@ public:
     //-------------------------------------------------------------------------
     void set_external_uint32_array(const uint32_array &data);
     void set_external(const uint32_array &data);
-    
+
     //-------------------------------------------------------------------------
     void set_external_uint64_array(const uint64_array &data);
     void set_external(const uint64_array &data);
@@ -1908,7 +1908,7 @@ public:
 //  set_external array gap methods for c-native types
 //-----------------------------------------------------------------------------
     void set_external(const char_array &data);
-        
+
     #ifndef CONDUIT_USE_CHAR
         void set_external(const signed_char_array &data);
         void set_external(const unsigned_char_array &data);
@@ -1950,7 +1950,7 @@ public:
 
 //-----------------------------------------------------------------------------
 // -- set_external for bitwidth style std::vector types ---
-//----------------------------------------------------------------------------- 
+//-----------------------------------------------------------------------------
 
     //-------------------------------------------------------------------------
     // signed integer array types via std::vector
@@ -1965,7 +1965,7 @@ public:
     //-------------------------------------------------------------------------
     void set_external_int32_vector(std::vector<int32> &data);
     void set_external(std::vector<int32> &data);
-    
+
     //-------------------------------------------------------------------------
     void set_external_int64_vector(std::vector<int64> &data);
     void set_external(std::vector<int64> &data);
@@ -1975,15 +1975,15 @@ public:
     //-------------------------------------------------------------------------
     void set_external_uint8_vector(std::vector<uint8> &data);
     void set_external(std::vector<uint8> &data);
-    
+
     //-------------------------------------------------------------------------
     void set_external_uint16_vector(std::vector<uint16> &data);
     void set_external(std::vector<uint16> &data);
-    
+
     //-------------------------------------------------------------------------
     void set_external_uint32_vector(std::vector<uint32> &data);
     void set_external(std::vector<uint32> &data);
-    
+
     //-------------------------------------------------------------------------
     void set_external_uint64_vector(std::vector<uint64> &data);
     void set_external(std::vector<uint64> &data);
@@ -2002,7 +2002,7 @@ public:
 //  set_external vector gap methods for c-native types
 //-----------------------------------------------------------------------------
     void set_external(const std::vector<char> &data);
-    
+
     #ifndef CONDUIT_USE_CHAR
         void set_external(const std::vector<signed char> &data);
         void set_external(const std::vector<unsigned char> &data);
@@ -2027,7 +2027,7 @@ public:
         void set_external(const std::vector<long long> &data);
         void set_external(const std::vector<unsigned long long> &data);
     #endif
-        
+
     #ifndef CONDUIT_USE_FLOAT
         void set_external(const std::vector<float> &data);
     #endif
@@ -2038,7 +2038,7 @@ public:
 
 
 //-----------------------------------------------------------------------------
-///@}                      
+///@}
 //-----------------------------------------------------------------------------
 //
 // -- end  declaration of Node set_external methods --
@@ -2062,7 +2062,7 @@ public:
 // -- set path external for generic types --
 //-----------------------------------------------------------------------------
 
-    //-------------------------------------------------------------------------    
+    //-------------------------------------------------------------------------
     void    set_path_external_node(const std::string &path,
                                    Node &node);
 
@@ -2073,7 +2073,7 @@ public:
     void    set_path_external_data_using_schema(const std::string &path,
                                                 const Schema &schema,
                                                 void *data);
-    
+
     void    set_path_external(const std::string &path,
                               const Schema &schema,
                               void *data);
@@ -2088,7 +2088,7 @@ public:
                               void *data);
 
 //-----------------------------------------------------------------------------
-// -- set_path_external via bitwidth style pointers (scalar and array types) -- 
+// -- set_path_external via bitwidth style pointers (scalar and array types) --
 //-----------------------------------------------------------------------------
     //-------------------------------------------------------------------------
     // signed integer pointer cases
@@ -2111,7 +2111,7 @@ public:
 
     //-------------------------------------------------------------------------
     void set_path_external_int16_ptr(const std::string &path,
-                                     int16 *data, 
+                                     int16 *data,
                                      index_t num_elements = 1,
                                      index_t offset = 0,
                                      index_t stride = sizeof(conduit::int16),
@@ -2120,13 +2120,13 @@ public:
 
 
     void set_path_external(const std::string &path,
-                           int16 *data, 
+                           int16 *data,
                            index_t num_elements = 1,
                            index_t offset = 0,
                            index_t stride = sizeof(conduit::int16),
                            index_t element_bytes = sizeof(conduit::int16),
                            index_t endianness = Endianness::DEFAULT_ID);
- 
+
     //-------------------------------------------------------------------------
     void set_path_external_int32_ptr(const std::string &path,
                                      int32 *data,
@@ -2199,7 +2199,7 @@ public:
 
     //-------------------------------------------------------------------------
     void set_path_external_uint32_ptr(const std::string &path,
-                                      uint32 *data, 
+                                      uint32 *data,
                                       index_t num_elements = 1,
                                       index_t offset = 0,
                                       index_t stride = sizeof(conduit::uint32),
@@ -2207,7 +2207,7 @@ public:
                                       index_t endianness = Endianness::DEFAULT_ID);
 
     void set_path_external(const std::string &path,
-                           uint32 *data, 
+                           uint32 *data,
                            index_t num_elements = 1,
                            index_t offset = 0,
                            index_t stride = sizeof(conduit::uint32),
@@ -2252,7 +2252,7 @@ public:
 
     //-------------------------------------------------------------------------
     void set_path_external_float64_ptr(const std::string &path,
-                                       float64 *data, 
+                                       float64 *data,
                                        index_t num_elements = 1,
                                        index_t offset = 0,
                                        index_t stride = sizeof(conduit::float64),
@@ -2260,7 +2260,7 @@ public:
                                        index_t endianness = Endianness::DEFAULT_ID);
 
     void set_path_external(const std::string &path,
-                           float64 *data, 
+                           float64 *data,
                            index_t num_elements = 1,
                            index_t offset = 0,
                            index_t stride = sizeof(conduit::float64),
@@ -2349,7 +2349,7 @@ public:
                                index_t element_bytes = sizeof(CONDUIT_NATIVE_UNSIGNED_LONG),
                                index_t endianness = Endianness::DEFAULT_ID);
     #endif
-   
+
     #if defined(CONDUIT_HAS_LONG_LONG) && !defined(CONDUIT_USE_LONG_LONG)
         void set_path_external(const std::string &path,
                                long long *data,
@@ -2367,7 +2367,7 @@ public:
                                index_t element_bytes = sizeof(CONDUIT_NATIVE_UNSIGNED_LONG_LONG),
                                index_t endianness = Endianness::DEFAULT_ID);
     #endif
-  
+
     #ifndef CONDUIT_USE_FLOAT
         void set_path_external(const std::string &path,
                                float *data,
@@ -2486,7 +2486,7 @@ public:
     #ifndef CONDUIT_USE_SHORT
         void set_path_external(const std::string &path,
                                const short_array &data);
-                      
+
         void set_path_external(const std::string &path,
                                const unsigned_short_array &data);
     #endif
@@ -2494,7 +2494,7 @@ public:
     #ifndef CONDUIT_USE_INT
         void set_path_external(const std::string &path,
                                const int_array &data);
-                      
+
         void set_path_external(const std::string &path,
                                const unsigned_int_array &data);
     #endif
@@ -2502,7 +2502,7 @@ public:
     #ifndef CONDUIT_USE_LONG
         void set_path_external(const std::string &path,
                                const long_array &data);
-                      
+
         void set_path_external(const std::string &path,
                                const unsigned_long_array &data);
     #endif
@@ -2510,7 +2510,7 @@ public:
     #if defined(CONDUIT_HAS_LONG_LONG) && !defined(CONDUIT_USE_LONG_LONG)
         void set_path_external(const std::string &path,
                                const long_long_array &data);
-                      
+
         void set_path_external(const std::string &path,
                                const unsigned_long_long_array &data);
     #endif
@@ -2535,7 +2535,7 @@ public:
 //-----------------------------------------------------------------------------
 // -- set_path_external for bitwidth style std::vector types ---
 //-----------------------------------------------------------------------------
-    
+
     //-------------------------------------------------------------------------
     // signed integer array types via std::vector
     //-------------------------------------------------------------------------
@@ -2615,27 +2615,27 @@ public:
 //-----------------------------------------------------------------------------
 //  set_path_external vector gap methods for c-native types
 //-----------------------------------------------------------------------------
-    void set_path_external(const std::string &path, 
+    void set_path_external(const std::string &path,
                            const std::vector<char> &data);
 
     #ifndef CONDUIT_USE_CHAR
-        void set_path_external(const std::string &path, 
+        void set_path_external(const std::string &path,
                                const std::vector<signed char> &data);
-                 
-        void set_path_external(const std::string &path, 
+
+        void set_path_external(const std::string &path,
                                const std::vector<unsigned char> &data);
     #endif
 
     #ifndef CONDUIT_USE_SHORT
-        void set_path_external(const std::string &path, 
+        void set_path_external(const std::string &path,
                                const std::vector<short> &data);
 
-        void set_path_external(const std::string &path, 
+        void set_path_external(const std::string &path,
                                const std::vector<unsigned short> &data);
     #endif
 
     #ifndef CONDUIT_USE_INT
-        void set_path_external(const std::string &path, 
+        void set_path_external(const std::string &path,
                                const std::vector<int> &data);
 
         void set_path_external(const std::string &path,
@@ -2643,34 +2643,34 @@ public:
     #endif
 
     #ifndef CONDUIT_USE_LONG
-        void set_path_external(const std::string &path, 
+        void set_path_external(const std::string &path,
                                const std::vector<long> &data);
 
-        void set_path_external(const std::string &path, 
+        void set_path_external(const std::string &path,
                                const std::vector<unsigned long> &data);
     #endif
 
     #if defined(CONDUIT_HAS_LONG_LONG) && !defined(CONDUIT_USE_LONG_LONG)
-        void set_path_external(const std::string &path, 
+        void set_path_external(const std::string &path,
                                const std::vector<long long> &data);
 
-        void set_path_external(const std::string &path, 
+        void set_path_external(const std::string &path,
                                const std::vector<unsigned long long> &data);
     #endif
 
     #ifndef CONDUIT_USE_FLOAT
-        void set_path_external(const std::string &path, 
+        void set_path_external(const std::string &path,
                                const std::vector<float> &data);
     #endif
 
     #ifndef CONDUIT_USE_DOUBLE
-        void set_path_external(const std::string &path, 
+        void set_path_external(const std::string &path,
                                const std::vector<double> &data);
     #endif
 
 
 //-----------------------------------------------------------------------------
-///@}                      
+///@}
 //-----------------------------------------------------------------------------
 //
 // -- end declaration of Node set_path_external methods --
@@ -2711,7 +2711,7 @@ public:
     Node &operator=(uint16 data);
     Node &operator=(uint32 data);
     Node &operator=(uint64 data);
-    
+
     // floating point scalar types
     Node &operator=(float32 data);
     Node &operator=(float64 data);
@@ -2722,7 +2722,7 @@ public:
 //-----------------------------------------------------------------------------
 
     Node &operator=(char data);
-    
+
     #ifndef CONDUIT_USE_CHAR
         Node &operator=(signed char data);
         Node &operator=(unsigned char data);
@@ -2786,12 +2786,12 @@ public:
 
 #ifndef CONDUIT_USE_SHORT
     Node &operator=(const short_array &data);
-    Node &operator=(const unsigned_short_array &data); 
+    Node &operator=(const unsigned_short_array &data);
 #endif
 
 #ifndef CONDUIT_USE_INT
     Node &operator=(const int_array &data);
-    Node &operator=(const unsigned_int_array &data); 
+    Node &operator=(const unsigned_int_array &data);
 #endif
 
 #ifndef CONDUIT_USE_LONG
@@ -2850,17 +2850,17 @@ public:
 
 #ifndef CONDUIT_USE_INT
     Node &operator=(const std::vector<int> &data);
-    Node &operator=(const std::vector<unsigned int> &data); 
+    Node &operator=(const std::vector<unsigned int> &data);
 #endif
 
 #ifndef CONDUIT_USE_LONG
     Node &operator=(const std::vector<long> &data);
-    Node &operator=(const std::vector<unsigned long> &data); 
+    Node &operator=(const std::vector<unsigned long> &data);
 #endif
 
 #if defined(CONDUIT_HAS_LONG_LONG) && !defined(CONDUIT_USE_LONG_LONG)
     Node &operator=(const std::vector<long long> &data);
-    Node &operator=(const std::vector<unsigned long long> &data); 
+    Node &operator=(const std::vector<unsigned long long> &data);
 #endif
 
 #ifndef CONDUIT_USE_FLOAT
@@ -2873,14 +2873,14 @@ public:
 
 
 //-----------------------------------------------------------------------------
-// -- assignment operators for string types -- 
+// -- assignment operators for string types --
 //-----------------------------------------------------------------------------
     // char8_str use cases
     Node &operator=(const char *data);
     Node &operator=(const std::string &data);
 
 //-----------------------------------------------------------------------------
-///@}                      
+///@}
 //-----------------------------------------------------------------------------
 //
 // -- end declaration of Node assignment operators --
@@ -2919,8 +2919,8 @@ public:
 //-----------------------------------------------------------------------------
 // -- update methods ---
 //-----------------------------------------------------------------------------
-    /// update() adds children from n_src to current Node (analogous to a 
-    /// python dictionary update) 
+    /// update() adds children from n_src to current Node (analogous to a
+    /// python dictionary update)
     ///
     void        update(const Node &n_src);
 
@@ -2928,7 +2928,7 @@ public:
     ///  the current Nodes children.
     void        update_compatible(const Node &n_src);
 
-    /// update_external() sets this node to describe the data from the children 
+    /// update_external() sets this node to describe the data from the children
     //   in n_src.
     void        update_external(Node &n_src);
 
@@ -2940,10 +2940,10 @@ public:
 
     void endian_swap_to_machine_default()
         {endian_swap(Endianness::DEFAULT_ID);}
-    
+
     void endian_swap_to_little()
         {endian_swap(Endianness::LITTLE_ID);}
-    
+
     void endian_swap_to_big()
         {endian_swap(Endianness::BIG_ID);}
 
@@ -2954,7 +2954,7 @@ public:
     ///
     /// These methods allow you to coerce a leaf type to another type.
     ///
-    
+
     /// scalar coercion
 
     /// convert to a signed integer types
@@ -2962,18 +2962,18 @@ public:
     int16            to_int16()  const;
     int32            to_int32()  const;
     int64            to_int64()  const;
-    
+
     /// convert to a unsigned integer types
     uint8            to_uint8()   const;
     uint16           to_uint16()  const;
     uint32           to_uint32()  const;
     uint64           to_uint64()  const;
-    
+
     /// convert to a floating point type
     float32          to_float32() const;
     float64          to_float64() const;
-    
-    /// convert to the index type 
+
+    /// convert to the index type
     index_t          to_index_t() const;
 
     /// convert to c integer types
@@ -3016,8 +3016,8 @@ public:
 
 
 //-----------------------------------------------------------------------------
-// -- array conversion methods -- 
-// 
+// -- array conversion methods --
+//
 /// These methods convert an array to a specific array type.
 /// The result is stored in the passed node.
 //-----------------------------------------------------------------------------
@@ -3027,23 +3027,23 @@ public:
     void    to_int16_array(Node &res) const;
     void    to_int32_array(Node &res) const;
     void    to_int64_array(Node &res) const;
-    
+
     /// convert to a unsigned integer types
     void    to_uint8_array(Node &res)  const;
     void    to_uint16_array(Node &res) const;
     void    to_uint32_array(Node &res) const;
     void    to_uint64_array(Node &res) const;
-    
+
     /// convert to a floating point type
     void    to_float32_array(Node &res) const;
     void    to_float64_array(Node &res) const;
 
-    /// convert to c types 
+    /// convert to c types
     void    to_char_array(Node &res)  const;
     void    to_short_array(Node &res) const;
     void    to_int_array(Node &res)   const;
     void    to_long_array(Node &res)  const;
-    
+
     /// convert to c signed integer types
     void    to_signed_char_array(Node &res) const;
     void    to_signed_short_array(Node &res) const;
@@ -3061,8 +3061,8 @@ public:
     void    to_double_array(Node &res) const;
 
 //-----------------------------------------------------------------------------
-// -- dynamic conversion methods -- 
-// 
+// -- dynamic conversion methods --
+//
 /// These methods convert any data to a given type.
 /// The result is stored in the passed node.
 //-----------------------------------------------------------------------------
@@ -3074,7 +3074,7 @@ public:
 //
 // This class allows us to support casting return semantics.
 // we can't support these methods directly in conduit::Node because doing so
-// undermines our operator=() overloads. 
+// undermines our operator=() overloads.
 //-----------------------------------------------------------------------------
     class CONDUIT_API Value
     {
@@ -3103,7 +3103,7 @@ public:
             #ifdef CONDUIT_HAS_LONG_LONG
                 operator unsigned long long() const;
             #endif
-            
+
             // cast operators for floating point types
             operator float()  const;
             operator double() const;
@@ -3134,7 +3134,7 @@ public:
                 operator unsigned long long *() const;
             #endif
 
-            
+
             // as floating point ptr
             operator float*()  const;
             operator double*() const;
@@ -3145,7 +3145,7 @@ public:
 
             // -- as array -- //
             operator char_array()  const;
-            
+
             // as signed array
             operator signed_char_array()  const;
             operator signed_short_array() const;
@@ -3173,13 +3173,13 @@ public:
 
 
         private:
-            // This is private we only want conduit::Node to create a 
+            // This is private we only want conduit::Node to create a
             // conduit::Node::Value instance
             Value(Node *node, bool coerse);
             // holds the node with the actually data
             Node    *m_node;
-            // coercion flag, note - only scalars types can be coerced 
-            bool     m_coerse; 
+            // coercion flag, note - only scalars types can be coerced
+            bool     m_coerse;
     };
 
 //-----------------------------------------------------------------------------
@@ -3187,7 +3187,7 @@ public:
 //
 // This class allows us to support casting return semantics.
 // we can't support these methods directly in conduit::Node  because doing so
-// undermines our operator=() overloads. 
+// undermines our operator=() overloads.
 //-----------------------------------------------------------------------------
     class CONDUIT_API ConstValue
     {
@@ -3216,7 +3216,7 @@ public:
             #ifdef CONDUIT_HAS_LONG_LONG
                 operator unsigned long long() const;
             #endif
-            
+
             // cast operators for floating point types
             operator float()  const;
             operator double() const;
@@ -3258,7 +3258,7 @@ public:
 
             // -- as array -- //
             operator const char_array() const;
-            
+
             // as signed array
             operator const signed_char_array() const;
             operator const signed_short_array() const;
@@ -3286,13 +3286,13 @@ public:
 
 
         private:
-            // This is private we only want conduit::Node to create a 
+            // This is private we only want conduit::Node to create a
             // conduit::Node::ConstValue instance
             ConstValue(const Node *node, bool coerse);
             // holds the node with the actually data
             const Node *m_node;
-            // coercion flag, note - only scalars types can be coerced 
-            bool        m_coerse; 
+            // coercion flag, note - only scalars types can be coerced
+            bool        m_coerse;
     };
 
 //-----------------------------------------------------------------------------
@@ -3320,22 +3320,22 @@ public:
     //   "json"
     //   "conduit_json"
     //   "conduit_base64_json"
-    std::string         to_json(const std::string &protocol="json", 
-                                index_t indent=2, 
+    std::string         to_json(const std::string &protocol="json",
+                                index_t indent=2,
                                 index_t depth=0,
                                 const std::string &pad=" ",
                                 const std::string &eoe="\n") const;
 
     void                to_json_stream(std::ostream &os,
                                        const std::string &protocol="json",
-                                       index_t indent=2, 
+                                       index_t indent=2,
                                        index_t depth=0,
                                        const std::string &pad=" ",
                                        const std::string &eoe="\n") const;
 
     void                to_json_stream(const std::string &stream_path,
                                        const std::string &protocol="json",
-                                       index_t indent=2, 
+                                       index_t indent=2,
                                        index_t depth=0,
                                        const std::string &pad=" ",
                                        const std::string &eoe="\n") const;
@@ -3359,17 +3359,17 @@ public:
 ///@{
 //-----------------------------------------------------------------------------
 /// description:
-///  These methods provide general info about the node hierarchy, and memory 
+///  These methods provide general info about the node hierarchy, and memory
 ///  layout.
 //-----------------------------------------------------------------------------
     // schema access
-    const Schema     &schema() const 
+    const Schema     &schema() const
                         { return *m_schema;}
 
     const DataType   &dtype() const
                         { return m_schema->dtype();}
 
-    Schema          *schema_ptr() 
+    Schema          *schema_ptr()
                         {return m_schema;}
 
     // check if data owned by this node is externally
@@ -3382,7 +3382,7 @@ public:
                         {return m_parent == NULL;}
 
     // parent access
-    Node            *parent() 
+    Node            *parent()
                         {return m_parent;}
 
     const Node      *parent() const
@@ -3390,24 +3390,24 @@ public:
 
     //memory space info
 
-    /// stride() * (num_elements()-1) + element_bytes() summed over all 
-    /// leaves 
+    /// stride() * (num_elements()-1) + element_bytes() summed over all
+    /// leaves
     index_t          total_strided_bytes() const
                         { return m_schema->total_strided_bytes();}
 
-    /// num_elements() * element_bytes() summed over all leaves 
+    /// num_elements() * element_bytes() summed over all leaves
     index_t          total_bytes_compact() const
                         { return m_schema->total_bytes_compact();}
 
 
-    /// total number of bytes allocated in this node hierarchy 
+    /// total number of bytes allocated in this node hierarchy
     index_t           total_bytes_allocated() const;
 
-    /// total number of bytes memory mapped in this node hierarchy 
+    /// total number of bytes memory mapped in this node hierarchy
     index_t           total_bytes_mmaped() const;
 
     /// Is this node using a compact data layout?
-    bool              is_compact() const 
+    bool              is_compact() const
                          {return m_schema->is_compact();}
 
     //-------------------------------------------------------------------------
@@ -3415,9 +3415,9 @@ public:
     //-------------------------------------------------------------------------
     /// A node is contiguous if the leaves of it children (traversed in a depth
     /// first order) cover a contiguous chunk of the address space.
-    /// 
+    ///
     /// The direct address checks are only done for leaves with data,
-    /// nodes in the objects, lists, or empty roles don't directly 
+    /// nodes in the objects, lists, or empty roles don't directly
     /// advance the pointer.
     ///
     /// Checks use each leaf's offset and the total strided bytes
@@ -3428,20 +3428,20 @@ public:
 
     /// Does this node has a contiguous data layout?
     bool             is_contiguous() const;
-    
-    
-    /// true if node hierarchy's memory contiguously follows 
+
+
+    /// true if node hierarchy's memory contiguously follows
     /// the given node's memory
     bool             contiguous_with(const Node &n) const;
 
-    /// true if node hierarchy's memory contiguously follows 
+    /// true if node hierarchy's memory contiguously follows
     /// the given address. Note: contiguous with NULL is false.
     bool             contiguous_with(void *address) const;
-    
+
 
     /// if this node has a contiguous data layout, returns
     /// the start address of its memory, otherwise returns NULL
-    
+
     void            *contiguous_data_ptr();
     const void      *contiguous_data_ptr() const;
 
@@ -3466,7 +3466,7 @@ public:
     /// info() creates a node that contains metadata about the current
     /// node's memory properties
     void             info(Node &nres) const;
-    /// TODO: this is inefficient w/o move semantics, but is very 
+    /// TODO: this is inefficient w/o move semantics, but is very
     /// convenient for testing and example programs.
     Node             info() const;
 
@@ -3503,15 +3503,16 @@ public:
     /// return a iterator that give access to this nodes children
     NodeIterator        children();
     NodeConstIterator   children() const;
-    
-    // When fetching, there is no absolute path construct, all paths are 
+
+    // When fetching, there is no absolute path construct, all paths are
     /// fetched relative to the current node (a leading "/" is ignored when
     /// fetching). Empty path names are also ignored, fetching "a///b" is
     /// equalvalent to fetching "a/b".
 
     /// fetch the node at the given path
-    /// non-const `fetch' methods do modify map structure if a path 
+    /// non-const `fetch' methods do modify map structure if a path
     /// does not exist
+    Node             &fetch(const string_view &path);
     Node             &fetch(const std::string &path);
     const Node       &fetch(const std::string &path) const;
 
@@ -3552,7 +3553,7 @@ public:
 
     /// checks if a node has a direct child with given name
     bool        has_child(const std::string &name) const;
-    /// checks if given path exists in the Node hierarchy 
+    /// checks if given path exists in the Node hierarchy
     bool        has_path(const std::string &path) const;
     /// returns the direct child names for this node
     const std::vector<std::string> &child_names() const;
@@ -3571,21 +3572,21 @@ public:
 
     /// helpers to create a list of a homogenous types
     ///
-    /// these allocates contiguous chunk of data to 
-    /// hold num_entries copies of the given schema or 
+    /// these allocates contiguous chunk of data to
+    /// hold num_entries copies of the given schema or
     /// dtype, and change the node into a list with
     /// children pointing into this chunk of data
-    /// 
+    ///
     /// the node owns the data, and the children
-    /// are "set_external" to the proper location. 
-    /// 
+    /// are "set_external" to the proper location.
+    ///
     void list_of(const Schema &schema,
                  index_t num_entries);
 
 
     void list_of(const DataType &dtype,
                  index_t num_entries);
-    
+
     void list_of_external(void *data,
                           const Schema &schema,
                           index_t num_entries);
@@ -3611,7 +3612,7 @@ public:
 /// description:
 ///  Direct access to data at leaf types.
 //-----------------------------------------------------------------------------
-     
+
      // signed integer scalars
     int8             as_int8()   const;
     int16            as_int16()  const;
@@ -3698,10 +3699,10 @@ public:
     const char      *as_char8_str() const;
     std::string      as_string()    const;
 
-    // direct data pointer access 
+    // direct data pointer access
     void            *data_ptr();
     const void      *data_ptr() const;
-    
+
     /// returns the number of bytes allocated by this node
     index_t          allocated_bytes() const
                         {return !m_mmaped ? m_data_size : 0;}
@@ -3712,7 +3713,7 @@ public:
 
     void  *element_ptr(index_t idx)
         {return static_cast<char*>(m_data) + dtype().element_index(idx);};
-    const void  *element_ptr(index_t idx) const 
+    const void  *element_ptr(index_t idx) const
         {return static_cast<char*>(m_data) + dtype().element_index(idx);};
 
 //-----------------------------------------------------------------------------
@@ -3881,7 +3882,7 @@ public:
 #ifdef CONDUIT_HAS_LONG_LONG
     const long_long_array  as_long_long_array() const;
 #endif
-    
+
     // signed integer array types via conduit::DataArray (const variants)
     const signed_char_array       as_signed_char_array()  const;
     const signed_short_array      as_signed_short_array() const;
@@ -3935,15 +3936,15 @@ private:
 //-----------------------------------------------------------------------------
     void             set_data_ptr(void *data_ptr);
     ///
-    /// Note: set_schema_ptr is *only* used in the case were we have 
-    /// a schema pointer that is owned by a parent schema. Using it to set a 
+    /// Note: set_schema_ptr is *only* used in the case were we have
+    /// a schema pointer that is owned by a parent schema. Using it to set a
     /// pointer that should be owned by a node unleashes chaos.
     ///
     void             set_schema_ptr(Schema *schema_ptr);
     void             append_node_ptr(Node *node)
                         {m_children.push_back(node);}
 
-    void             set_parent(Node *parent) 
+    void             set_parent(Node *parent)
                         { m_parent = parent;}
 
 
@@ -3959,7 +3960,7 @@ private:
 //=============================================================================
 //-----------------------------------------------------------------------------
 //
-// -- private methods and members -- 
+// -- private methods and members --
 //
 //-----------------------------------------------------------------------------
 //=============================================================================
@@ -3968,8 +3969,8 @@ private:
 // value access related to conditional long long and long double support
 //-----------------------------------------------------------------------------
 // We provide connivence methods for native c types, but we don't want to
-// provide them in the public api for long long and long double. 
-// Why? These types are ambiguous, if folks want a 64-bit integer, they should 
+// provide them in the public api for long long and long double.
+// Why? These types are ambiguous, if folks want a 64-bit integer, they should
 // explicitly use conduit::int64, conduit::uint64, etc
 // The only place where long long and long double will appear in the public
 // interface is in the Node::Value() class, where it is needed for casting magic
@@ -4029,16 +4030,16 @@ private:
     void              serialize(uint8 *data,
                                 index_t curr_offset) const;
 
-    /// Implements recursive check for if node is contiguous to the 
-    /// passed start address. If contiguous, returns true and the 
+    /// Implements recursive check for if node is contiguous to the
+    /// passed start address. If contiguous, returns true and the
     /// last address of the contiguous block.
     ///
     /// this method recursively traverses a node hierarchy
     ///
-    /// At each traversal step, it checks if the current Node is contiguous 
-    /// to the given address. 
+    /// At each traversal step, it checks if the current Node is contiguous
+    /// to the given address.
     ///
-    /// If contiguous: it returns true and the last address of the 
+    /// If contiguous: it returns true and the last address of the
     /// contiguous block the ref pointer "end_addy"
     ///
     /// If NOT contiguous:  it returns false, and end_addy is set to NULL.
@@ -4046,7 +4047,7 @@ private:
     /// to start the traversal, we use NULL input as a special case.
     ///
     /// The direct address checks are only done for leaves with data,
-    /// nodes in the objects, lists, or empty roles don't directly 
+    /// nodes in the objects, lists, or empty roles don't directly
     /// advance the pointer.
     bool              contiguous_with(uint8  *start_addy,
                                       uint8 *&end_addy) const;
@@ -4054,7 +4055,7 @@ private:
     void              info(Node &res,
                            const std::string &curr_path) const;
 
-    /// helper that finds the first non null data pointer, used by 
+    /// helper that finds the first non null data pointer, used by
     /// contiguous_data_ptr()
     const void       *find_first_data_ptr() const;
 
@@ -4064,7 +4065,7 @@ private:
 //
 //-----------------------------------------------------------------------------
     //-------------------------------------------------------------------------
-    // the generic to_json methods are used by the specialized cases 
+    // the generic to_json methods are used by the specialized cases
     //-------------------------------------------------------------------------
     std::string         to_json_generic(bool detailed,
                                         index_t indent=2,
@@ -4080,12 +4081,12 @@ private:
                                         const std::string &eoe="\n") const;
 
     void                to_json_generic(std::ostream &os,
-                                        bool detailed, 
-                                        index_t indent=2, 
+                                        bool detailed,
+                                        index_t indent=2,
                                         index_t depth=0,
                                         const std::string &pad=" ",
                                         const std::string &eoe="\n") const;
-   
+
     //-------------------------------------------------------------------------
     // transforms the node to json without any conduit schema constructs
     //-------------------------------------------------------------------------
@@ -4109,23 +4110,23 @@ private:
     //-------------------------------------------------------------------------
     // transforms the node to json that contains conduit schema constructs
     //-------------------------------------------------------------------------
-    std::string      to_detailed_json(index_t indent=2, 
+    std::string      to_detailed_json(index_t indent=2,
                                       index_t depth=0,
                                       const std::string &pad=" ",
                                       const std::string &eoe="\n") const;
 
     void             to_detailed_json(const std::string &stream_path,
-                                      index_t indent=2, 
+                                      index_t indent=2,
                                       index_t depth=0,
                                       const std::string &pad=" ",
                                       const std::string &eoe="\n") const;
 
     void             to_detailed_json(std::ostream &os,
-                                      index_t indent=2, 
+                                      index_t indent=2,
                                       index_t depth=0,
                                       const std::string &pad=" ",
                                       const std::string &eoe="\n") const;
-                                             
+
     //-------------------------------------------------------------------------
     // transforms the node to json with data payload encoded using base64
     //-------------------------------------------------------------------------
@@ -4158,7 +4159,7 @@ private:
     Schema              *m_schema;
     /// we need to know if *this* node created the schema
     bool                 m_owns_schema;
-    
+
     /// collection of children
     std::vector<Node*>   m_children;
 
@@ -4172,14 +4173,14 @@ private:
     bool      m_alloced;
     // flag that indicates if m_data is memory-mapped
     bool      m_mmaped;
-    
+
     // private class that implements a cross platform memory map interface
     class MMap;
 
     // memory-map helper instance
     // This is only allocated if a memory map is active (m_mmaped is true)
     // Note: m_mmaped is used for bookkeeping during cases were we are
-    // initializing nodes using memory maps, so it is still needed apart from 
+    // initializing nodes using memory maps, so it is still needed apart from
     // simply knowing if this pointer is valid.
     MMap     *m_mmap;
 };
