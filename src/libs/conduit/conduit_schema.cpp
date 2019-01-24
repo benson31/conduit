@@ -854,7 +854,7 @@ Schema::fetch(const string_view &path)
         Schema* my_schema = new Schema();
         my_schema->m_parent = this;
         children().push_back(my_schema);
-        object_map()[p_curr] = children().size() - 1;
+        object_map()[to_string(p_curr)] = children().size() - 1;
         object_order().push_back(to_string(p_curr));
     }
 
