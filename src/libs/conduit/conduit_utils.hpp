@@ -248,7 +248,7 @@ public:
         return std::string::npos;
     }
 
-    StringView<CharT> substr(size_t begin_idx, size_t end_idx)
+    StringView<CharT> substr(size_t begin_idx, size_t end_idx) const
     {
         return StringView<CharT>{beg_+begin_idx, end_idx-begin_idx};
     }
