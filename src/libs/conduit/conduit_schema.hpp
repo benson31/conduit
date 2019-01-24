@@ -65,7 +65,7 @@
 #include "conduit_core.hpp"
 #include "conduit_endianness.hpp"
 #include "conduit_data_type.hpp"
-
+#include "conduit_utils.hpp"
 
 //-----------------------------------------------------------------------------
 // -- begin conduit:: --
