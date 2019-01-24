@@ -190,7 +190,7 @@ namespace conduit
 template <typename CharT=char>
 class StringView
 {
-    CharT* beg_ = nullptr;
+    const CharT* beg_ = nullptr;
     size_t size_ = 0;
 
 public:
