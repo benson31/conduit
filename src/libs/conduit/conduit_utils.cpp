@@ -1,45 +1,45 @@
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
 // Copyright (c) 2014-2018, Lawrence Livermore National Security, LLC.
-// 
+//
 // Produced at the Lawrence Livermore National Laboratory
-// 
+//
 // LLNL-CODE-666778
-// 
+//
 // All rights reserved.
-// 
-// This file is part of Conduit. 
-// 
+//
+// This file is part of Conduit.
+//
 // For details, see: http://software.llnl.gov/conduit/.
-// 
+//
 // Please also read conduit/LICENSE
-// 
-// Redistribution and use in source and binary forms, with or without 
+//
+// Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided that the following conditions are met:
-// 
-// * Redistributions of source code must retain the above copyright notice, 
+//
+// * Redistributions of source code must retain the above copyright notice,
 //   this list of conditions and the disclaimer below.
-// 
+//
 // * Redistributions in binary form must reproduce the above copyright notice,
 //   this list of conditions and the disclaimer (as noted below) in the
 //   documentation and/or other materials provided with the distribution.
-// 
+//
 // * Neither the name of the LLNS/LLNL nor the names of its contributors may
 //   be used to endorse or promote products derived from this software without
 //   specific prior written permission.
-// 
+//
 // THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
 // AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
 // IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
 // ARE DISCLAIMED. IN NO EVENT SHALL LAWRENCE LIVERMORE NATIONAL SECURITY,
 // LLC, THE U.S. DEPARTMENT OF ENERGY OR CONTRIBUTORS BE LIABLE FOR ANY
-// DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL 
+// DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
 // DAMAGES  (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
 // OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
-// HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, 
+// HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
 // STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING
-// IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
+// IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 // POSSIBILITY OF SUCH DAMAGE.
-// 
+//
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
 
 //-----------------------------------------------------------------------------
@@ -51,7 +51,7 @@
 #include "conduit_error.hpp"
 
 //-----------------------------------------------------------------------------
-// -- standard lib includes -- 
+// -- standard lib includes --
 //-----------------------------------------------------------------------------
 
 // for sleep funcs
@@ -92,7 +92,7 @@ static const std::string file_path_sep_string(CONDUIT_UTILS_FILE_PATH_SEPARATOR)
 
 
 //-----------------------------------------------------------------------------
-// -- libb64 includes -- 
+// -- libb64 includes --
 //-----------------------------------------------------------------------------
 #define BUFFERSIZE 65536
 #include "b64/encode.h"
@@ -114,7 +114,7 @@ namespace utils
 
 //-----------------------------------------------------------------------------
 // default info message handler callback, simply prints to std::cout.
-void 
+void
 default_info_handler(const std::string &msg,
                      const std::string &file,
                      int line)
@@ -152,7 +152,7 @@ handle_info(const std::string &msg,
 
 //-----------------------------------------------------------------------------
 // default warning handler callback, simply throws a conduit::Error exception.
-void 
+void
 default_warning_handler(const std::string &msg,
                         const std::string &file,
                         int line)
@@ -189,7 +189,7 @@ handle_warning(const std::string &msg,
 
 //-----------------------------------------------------------------------------
 // default error handler callback, simply throws a conduit::Error exception.
-void 
+void
 default_error_handler(const std::string &msg,
                       const std::string &file,
                       int line)
@@ -225,7 +225,29 @@ handle_error(const std::string &msg,
 
 
 //-----------------------------------------------------------------------------
-void     
+void
+split_string(const string_view &str,
+             char sep,
+             string_view &curr,
+             string_view &next)
+{
+    curr.clear();
+    next.clear();
+
+    std::size_t found = str.find(sep);
+    if (found != std::string::npos)
+    {
+        curr = str.substr(0,found);
+        if(found != str.size()-1)
+            next = str.substr(found+1,str.size()-(found-1));
+    }
+    else
+    {
+        curr = str;
+    }
+}
+
+void
 split_string(const std::string &str,
              const std::string &sep,
              std::string &curr,
@@ -278,7 +300,7 @@ split_string(const std::string &str, char sep, std::vector<std::string> &sv)
 }
 
 //-----------------------------------------------------------------------------
-void     
+void
 rsplit_string(const std::string &str,
               const std::string &sep,
               std::string &curr,
@@ -301,7 +323,28 @@ rsplit_string(const std::string &str,
 }
 
 //-----------------------------------------------------------------------------
-void     
+void
+split_path(const std::string &path,
+           string_view &curr,
+           string_view &next)
+{
+    split_path(to_string_view(path),
+               curr,
+               next);
+}
+
+void
+split_path(const string_view &path,
+           string_view &curr,
+           string_view &next)
+{
+    split_string(path,
+                 '/',
+                 curr,
+                 next);
+}
+
+void
 split_path(const std::string &path,
            std::string &curr,
            std::string &next)
@@ -313,7 +356,7 @@ split_path(const std::string &path,
 }
 
 //-----------------------------------------------------------------------------
-void     
+void
 rsplit_path(const std::string &path,
             std::string &curr,
             std::string &next)
@@ -325,12 +368,12 @@ rsplit_path(const std::string &path,
 }
 
 //-----------------------------------------------------------------------------
-std::string 
+std::string
 join_path(const std::string &left,
           const std::string &right)
 {
     std::string res = left;
-    if(res.size() > 0 && 
+    if(res.size() > 0 &&
        res[res.size()-1] != '/' &&
        right.size() > 0 )
     {
@@ -341,7 +384,7 @@ join_path(const std::string &left,
 }
 
 //-----------------------------------------------------------------------------
-std::string 
+std::string
 file_path_separator()
 {
     return file_path_sep_string;
@@ -384,9 +427,9 @@ split_file_path(const std::string &path,
     //
     // NOTE: We could if-def for windows, but its nice to be able
     // to run unit tests on other platforms.
-    if( sep == std::string(":") && 
-        path.size() > 2 && 
-        path[1] == ':' && 
+    if( sep == std::string(":") &&
+        path.size() > 2 &&
+        path[1] == ':' &&
         path[2] == '\\')
     {
         // eval w/o drive letter
@@ -431,9 +474,9 @@ rsplit_file_path(const std::string &path,
     //
     // NOTE: We could if-def for windows, but its nice to be able
     // to run unit tests on other platforms.
-    if( sep == std::string(":") && 
-        path.size() > 2 && 
-        path[1] == ':' && 
+    if( sep == std::string(":") &&
+        path.size() > 2 &&
+        path[1] == ':' &&
         path[2] == '\\')
     {
         // eval w/o drive letter
@@ -477,7 +520,7 @@ rsplit_file_path(const std::string &path,
 
 
 //-----------------------------------------------------------------------------
-std::string 
+std::string
 join_file_path(const std::string &left,
                const std::string &right)
 {
@@ -568,12 +611,12 @@ system_execute(const std::string &cmd)
 
 
 //-----------------------------------------------------------------------------
-bool 
+bool
 check_word_char(const char v)
 {
-    bool res = ( ( 'A' <= v) && 
+    bool res = ( ( 'A' <= v) &&
                  (  v  <= 'Z') );
-    res = res || ( ( 'a' <= v) && 
+    res = res || ( ( 'a' <= v) &&
                  (  v  <= 'z') );
     res = res || v == '_';
     return res;
@@ -583,7 +626,7 @@ check_word_char(const char v)
 bool
 check_num_char(const char v)
 {
-    bool res = ( ( '0' <= v) && 
+    bool res = ( ( '0' <= v) &&
                  (  v  <= '9') );
     return res;
 }
@@ -597,7 +640,7 @@ json_sanitize(const std::string &json)
     /// Really wanted to use regexs to solve this
     /// but posix regs are greedy & it was hard for me to construct
     /// a viable regex, vs those that support non-greedy (Python + Perl style regex)
-    /// 
+    ///
     /// Here are regexs I was able to use in python:
     //  *comments*
     //     Remove '//' to end of line
@@ -606,7 +649,7 @@ json_sanitize(const std::string &json)
     //    find words not surrounded by quotes
     //    regex: (?<!"|\w)(\w+)(?!"|\w)
     //    and add quotes
-    
+
     //
     // for now, we use a simple char by char parser
     //
@@ -616,8 +659,8 @@ json_sanitize(const std::string &json)
     bool        in_string=false;
     bool        in_id =false;
     std::string cur_id = "";
-    
-    for(size_t i = 0; i < json.size(); ++i) 
+
+    for(size_t i = 0; i < json.size(); ++i)
     {
         bool emit = true;
         // check for start & end of a string
@@ -628,30 +671,30 @@ json_sanitize(const std::string &json)
             else
                 in_string = true;
         }
-        
+
         // handle two cases were we want to sanitize:
         // comments '//' to end of line & unquoted ids
         if(!in_string)
         {
             if(!in_comment)
             {
-                if( json[i] == '/'  && 
-                    i < (json.size()-1) && 
+                if( json[i] == '/'  &&
+                    i < (json.size()-1) &&
                     json[i+1] == '/')
                 {
                     in_comment = true;
                     emit = false;
                 }
             }
-            
+
             if(!in_comment)
             {
-                
+
                 if( !in_id && check_word_char(json[i]))
                 {
                     // ids can't start with numbers ,
                     // check the prior char if it exists
-                    if(i > 0 && 
+                    if(i > 0 &&
                        !check_num_char(json[i-1]) &&
                        json[i-1] != '.')
                     {
@@ -668,14 +711,14 @@ json_sanitize(const std::string &json)
                         in_id = true;
                         // accum id chars
                         cur_id += json[i];
-                        emit = false; 
+                        emit = false;
                     }
                     else
                     {
                         in_id = false;
-                        /// check for true, false, and null 
+                        /// check for true, false, and null
                         /// which we need to support in json
-                        if( !(cur_id == "true"  || 
+                        if( !(cur_id == "true"  ||
                               cur_id == "false" ||
                               cur_id == "null" ))
                         {
@@ -687,13 +730,13 @@ json_sanitize(const std::string &json)
                             /// don't escape true or false
                             res +=  cur_id;
                         }
-                        
+
                         cur_id = "";
                     }
                     // we will also emit this char
                 }
             }
-            
+
             if(in_comment)
             {
                 emit = false;
@@ -703,7 +746,7 @@ json_sanitize(const std::string &json)
                 }
             }
         }
-        
+
         if(emit)
             res += json[i];
     }
@@ -712,7 +755,7 @@ json_sanitize(const std::string &json)
 }
 
 //-----------------------------------------------------------------------------
-void 
+void
 indent(std::ostream &os,
        index_t indent,
        index_t depth,
@@ -749,7 +792,7 @@ std::string
 escape_special_chars(const std::string &input)
 {
     std::string res;
-    for(size_t i = 0; i < input.size(); ++i) 
+    for(size_t i = 0; i < input.size(); ++i)
     {
         char val = input[i];
         // supported special chars
@@ -793,7 +836,7 @@ escape_special_chars(const std::string &input)
                 res += "\\r";
                 break;
             }
-            
+
             default:
             {
                 res += val;
@@ -810,7 +853,7 @@ unescape_special_chars(const std::string &input)
 {
     std::string res;
     size_t input_size = input.size();
-    for(size_t i = 0; i < input_size; ++i) 
+    for(size_t i = 0; i < input_size; ++i)
     {
         // check for escape char
         if( input[i] == '\\' &&
@@ -824,7 +867,7 @@ unescape_special_chars(const std::string &input)
                 case '\\':
                 // even though we don't escape forward slashes
                 // we support unescaping them.
-                case '/': 
+                case '/':
                 {
                     res += val;
                     // skip escape char
@@ -902,7 +945,7 @@ base64_encode(const void *src,
     const char *src_ptr = (const char*)src;
     char *des_ptr       = (char*)dest;
     memset(des_ptr,0,(size_t)base64_encode_buffer_size(src_nbytes));
-    
+
     int code_len = base64_encode_block(src_ptr,
                                        nbytes,
                                        des_ptr,
@@ -916,7 +959,7 @@ base64_encode(const void *src,
 }
 
 //-----------------------------------------------------------------------------
-index_t 
+index_t
 base64_encode_buffer_size(index_t src_nbytes)
 {
      return  (4*src_nbytes) / 3 + 4 + 1;
@@ -955,7 +998,7 @@ float64_to_string(float64 value)
     snprintf(buffer,64,"%.15g",value);
 
     std::string res(buffer);
-    
+
     // we check for inf or nan in string form.
     // std::isnan, isn't portable until c++11
     // http://stackoverflow.com/questions/570669/checking-if-a-double-or-float-is-nan-in-c
@@ -971,7 +1014,7 @@ float64_to_string(float64 value)
     return res;
 }
 
-//----------------------------------------------------------------------------- 
+//-----------------------------------------------------------------------------
 // String hash functions
 //-----------------------------------------------------------------------------
 namespace hashing
@@ -979,7 +1022,7 @@ namespace hashing
 // NOTE: Borrowed from VisIt.
 
 // ****************************************************************************
-//  Function: Hash 
+//  Function: Hash
 //
 //  Purpose:
 //      Hash a variable length stream of bytes into a 32-bit value.
@@ -991,7 +1034,7 @@ namespace hashing
 //      use a bitmask.  For example, if you need only 10 bits, do
 //        h = (h & BJHashmask(10));
 //        In which case, the hash table should have hashsize(10) elements.
-//      
+//
 //        If you are hashing n strings (unsigned char **)k, do it like this:
 //          for (i=0, h=0; i<n; ++i) h = hash( k[i], len[i], h);
 //
@@ -1086,7 +1129,7 @@ hash(const char *k, unsigned int initval)
 unsigned int
 hash(const std::string &k, unsigned int initval)
 {
-    return hashing::Hash((unsigned char const*)k.c_str(), 
+    return hashing::Hash((unsigned char const*)k.c_str(),
                          k.size(), initval);
 }
 
@@ -1099,5 +1142,3 @@ hash(const std::string &k, unsigned int initval)
 //-----------------------------------------------------------------------------
 // -- end conduit:: --
 //-----------------------------------------------------------------------------
-
-
