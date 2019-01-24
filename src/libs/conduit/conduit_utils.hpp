@@ -196,7 +196,7 @@ class StringView
 public:
     using value_type = CharT;
 
-    string_view() noexcept = default;
+    StringView() noexcept = default;
     StringView(const CharT* begin, size_t size)
         : beg_{begin}, size_{size}
     {}
