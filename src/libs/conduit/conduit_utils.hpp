@@ -59,7 +59,7 @@
 #include <iostream>
 #include <iomanip>
 #include <sstream>
-#include <cstring>
+#include <string_view>
 
 //-----------------------------------------------------------------------------
 // -- conduit includes --
@@ -187,6 +187,8 @@
 namespace conduit
 {
 
+/*#undef USE_TOM_STRING_VIEW */
+#ifdef USE_TOM_STRING_VIEW
 template <typename CharT=char>
 class StringView
 {
@@ -200,20 +202,10 @@ public:
     StringView(const CharT* begin, size_t size)
         : beg_{begin}, size_{size}
     {}
-    StringView(std::basic_string<CharT> const& str)
-        : beg_{str.data()}, size_{str.size()}
-    {}
 
     StringView(const StringView<CharT> &other) noexcept = default;
     StringView<CharT>& operator=(
         const StringView<CharT> &other) noexcept = default;
-
-    StringView<CharT>& operator=(std::basic_string<CharT> const& str) noexcept
-    {
-        beg_ = str.data();
-        size_ = str.size();
-        return *this;
-    }
 
     StringView(StringView<CharT> &&other)
         : beg_{other.beg_}, size_{other.size_}
@@ -257,30 +249,27 @@ public:
 
 using string_view = StringView<char>;
 
-inline bool operator==(string_view const& str, const char* tgt)
-{
-    return std::strcmp(str.data(), tgt) == 0;
-}
+string_view to_string_view(std::string const& str);
 
-inline bool operator==(std::string const& str, string_view const& view)
-{
-    return str == view.data();
-}
+std::string to_string(string_view const& view);
 
+bool operator==(string_view const& str, const char* tgt);
+
+std::ostream& operator<<(std::ostream& os, const string_view &str);
+
+bool operator==(std::string const& str, string_view const& view);
+#else
+using string_view = std::string_view;
 inline string_view to_string_view(std::string const& str)
 {
     return string_view{str};
 }
-
 inline std::string to_string(string_view const& view)
 {
-    return std::string(view.data(), view.size());
+    return std::string{view};
 }
 
-inline std::ostream& operator<<(std::ostream& os, const string_view &str)
-{
-    return os << to_string(str);
-}
+#endif
 
 //-----------------------------------------------------------------------------
 // -- begin conduit::utils --

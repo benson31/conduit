@@ -257,15 +257,18 @@ public:
 
     /// non-const fetch with a path arg methods do modify map
     // structure if a path doesn't exist
+    Schema           &fetch(const char *path);
     Schema           &fetch(const string_view &path);
     Schema           &fetch(const std::string &path);
     const Schema     &fetch(const std::string &path) const;
 
+    Schema           *fetch_ptr(const char *path);
     Schema           *fetch_ptr(const string_view &path);
     Schema           *fetch_ptr(const std::string &path);
     const Schema     *fetch_ptr(const std::string &path) const;
 
     /// path to index map
+    index_t          child_index(const char*path) const;
     index_t          child_index(const string_view &path) const;
     index_t          child_index(const std::string &path) const;
 

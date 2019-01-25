@@ -3512,6 +3512,7 @@ public:
     /// fetch the node at the given path
     /// non-const `fetch' methods do modify map structure if a path
     /// does not exist
+    Node             &fetch(const char *path);
     Node             &fetch(const string_view &path);
     Node             &fetch(const std::string &path);
     const Node       &fetch(const std::string &path) const;

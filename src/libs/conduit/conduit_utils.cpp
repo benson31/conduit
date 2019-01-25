@@ -76,10 +76,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include <unistd.h>
+
 #include <algorithm>
 #include <limits>
 #include <fstream>
-
 
 // define proper path sep
 #if defined(CONDUIT_PLATFORM_WINDOWS)
@@ -105,6 +106,36 @@ using namespace base64;
 //-----------------------------------------------------------------------------
 namespace conduit
 {
+
+#ifdef USE_TOM_STRING_VIEW
+string_view to_string_view(std::string const& str)
+{
+    return string_view{str.data(), str.size()};
+}
+
+std::string to_string(string_view const& view)
+{
+    return std::string(view.data(), view.size());
+}
+
+bool operator==(string_view const& str, const char* tgt)
+{
+    return false;
+    //((str.size() == 0) && (*tgt == '\0'))
+    //    || (std::strncmp(str.data(), tgt, str.size()) == 0);
+}
+
+std::ostream& operator<<(std::ostream& os, const string_view &str)
+{
+    return os << "(" << getpid() << ")(sv)" << to_string(str);
+}
+
+bool operator==(std::string const& str, string_view const& view)
+{
+    return ((str.size() == view.size()) && (str.size() > 0UL)
+            && (std::strncmp(str.data(), view.data(), view.size()) == 0));
+}
+#endif
 
 //-----------------------------------------------------------------------------
 // -- begin conduit::utils --
@@ -231,15 +262,12 @@ split_string(const string_view &str,
              string_view &curr,
              string_view &next)
 {
-    curr.clear();
-    next.clear();
-
     std::size_t found = str.find(sep);
     if (found != std::string::npos)
     {
         curr = str.substr(0,found);
         if(found != str.size()-1)
-            next = str.substr(found+1,str.size()-(found-1));
+            next = str.substr(found+1);
     }
     else
     {

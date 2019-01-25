@@ -11801,7 +11801,13 @@ Node::fetch_child(const std::string &path)
 Node&
 Node::fetch(const std::string &path)
 {
-    return fetch(string_view{path});
+    return fetch(to_string_view(path));
+}
+
+Node&
+Node::fetch(const char *path)
+{
+    return fetch(string_view(path));
 }
 
 Node&

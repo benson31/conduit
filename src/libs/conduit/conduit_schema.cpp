@@ -781,6 +781,12 @@ Schema::child_index(const string_view &path) const
 }
 
 index_t
+Schema::child_index(const char *path) const
+{
+    return child_index(std::string(path));
+}
+
+index_t
 Schema::child_index(const std::string &path) const
 {
     index_t res=0;
@@ -826,9 +832,15 @@ Schema::child_name(index_t idx) const
 
 //---------------------------------------------------------------------------//
 Schema &
+Schema::fetch(const char *path)
+{
+    return fetch(string_view(path));
+}
+
+Schema &
 Schema::fetch(const std::string &path)
 {
-    return fetch(string_view{path});
+    return fetch(to_string_view(path));
 }
 
 Schema &
@@ -879,6 +891,12 @@ Schema::fetch(const std::string &path) const
 }
 
 //---------------------------------------------------------------------------//
+Schema *
+Schema::fetch_ptr(const char* path)
+{
+    return &fetch(path);
+}
+
 Schema *
 Schema::fetch_ptr(const std::string &path)
 {
